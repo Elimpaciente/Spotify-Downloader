@@ -70,9 +70,9 @@ async function handleRequest(request) {
     
     if (!trackInfoResponse.ok) {
       return new Response(JSON.stringify({
+        status_code: 400,
         developer: 'El Impaciente',
         telegram_channel: 'https://t.me/Apisimpacientes',
-        status_code: 400,
         message: 'Error getting track information from Spotify'
       }), {
         status: 400,
@@ -85,11 +85,12 @@ async function handleRequest(request) {
     
     const trackInfo = await trackInfoResponse.json()
     
-    if (!trackInfo.status || !trackInfo.result) {
+    // Check if result exists (API real response format)
+    if (!trackInfo.result || !trackInfo.result.id || !trackInfo.result.gid) {
       return new Response(JSON.stringify({
+        status_code: 400,
         developer: 'El Impaciente',
         telegram_channel: 'https://t.me/Apisimpacientes',
-        status_code: 400,
         message: 'Track not found or unavailable'
       }), {
         status: 400,
@@ -115,9 +116,9 @@ async function handleRequest(request) {
     
     if (!convertResponse.ok) {
       return new Response(JSON.stringify({
+        status_code: 400,
         developer: 'El Impaciente',
         telegram_channel: 'https://t.me/Apisimpacientes',
-        status_code: 400,
         message: 'Error generating download URL'
       }), {
         status: 400,
@@ -130,11 +131,12 @@ async function handleRequest(request) {
     
     const convertInfo = await convertResponse.json()
     
-    if (!convertInfo.status || !convertInfo.result || !convertInfo.result.download_url) {
+    // Check if download_url exists (API real response format)
+    if (!convertInfo.result || !convertInfo.result.download_url) {
       return new Response(JSON.stringify({
+        status_code: 400,
         developer: 'El Impaciente',
         telegram_channel: 'https://t.me/Apisimpacientes',
-        status_code: 400,
         message: 'Download URL not available for this track'
       }), {
         status: 400,
@@ -172,9 +174,9 @@ async function handleRequest(request) {
     const isTimeout = error.name === 'AbortError' || error.message.includes('timeout')
     
     return new Response(JSON.stringify({
+      status_code: 400,
       developer: 'El Impaciente',
       telegram_channel: 'https://t.me/Apisimpacientes',
-      status_code: 400,
       message: isTimeout ? 'Request timeout. Please try again' : 'Error processing the request. Please try again'
     }), {
       status: 400,
