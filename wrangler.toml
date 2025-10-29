@@ -1,4 +1,4 @@
-name = "spotify-downloader-api"
+name = "spotify-downloader"
 main = "Spotify Downloader.js"
 compatibility_date = "2024-01-01"
 
