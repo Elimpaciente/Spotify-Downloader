@@ -150,6 +150,12 @@ async function handleRequest(request) {
     // Build final download URL
     const downloadUrl = `https://api.fabdl.com${convertInfo.result.download_url}`
     
+    // Convert duration_ms to minutes:seconds format
+    const totalSeconds = Math.floor(duration_ms / 1000)
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    const durationFormatted = `${minutes}:${seconds.toString().padStart(2, '0')}`
+    
     // Successful response
     return new Response(JSON.stringify({
       status_code: 200,
@@ -158,7 +164,7 @@ async function handleRequest(request) {
       result: {
         title: name,
         artist: artists,
-        duration_ms: duration_ms,
+        duration: durationFormatted,
         download_url: downloadUrl
       }
     }), {
